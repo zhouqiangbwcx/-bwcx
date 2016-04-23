@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zq.dao.CustomerMapper">
+	<resultMap id="BaseResultMap" type="com.zq.model.Customer">
+		<result column="customer_id" property="customer_id" jdbcType="VARCHAR" />
+		<result column="customer_type" property="customer_type"
+			jdbcType="VARCHAR" />
+		<result column="customer_name" property="customer_name"
+			jdbcType="VARCHAR" />
+		<result column="customer_pwd" property="customer_pwd" jdbcType="VARCHAR" />
+		<result column="customer_account_pwd" property="customer_account_pwd"
+			jdbcType="VARCHAR" />
+		<result column="customer_phone" property="customer_phone"
+			jdbcType="VARCHAR" />
+		<result column="customer_email" property="customer_email"
+			jdbcType="VARCHAR" />
+		<result column="customer_state" property="customer_state"
+			jdbcType="VARCHAR" />
+		<result column="login_time" property="login_time" jdbcType="VARCHAR" />
+		<result column="creation_time" property="creation_time"
+			jdbcType="VARCHAR" />
+	</resultMap>
+	<!-- 列 -->
+	<sql id="Base_Column_List">
+		customer_id, customer_type, customer_name, customer_pwd, customer_account_pwd,
+		customer_phone, customer_email, customer_state, login_time,
+		creation_time
+	</sql>
+	
+		<!-- 保存 -->
+	<insert id="insertCustomer" useGeneratedKeys="true"
+		keyProperty="customer_id" parameterType="com.zq.model.Customer">
+	INSERT INTO customer
+            (
+             customer_type,
+             customer_name,
+             customer_pwd,
+             customer_account_pwd,
+             customer_phone,
+             customer_email,
+             customer_state,
+             login_time,
+             creation_time)
+	VALUES ( 
+	         #{customer_type},
+	         #{customer_name},
+	         #{customer_pwd},
+	         #{customer_account_pwd},
+	         #{customer_phone},
+	         #{customer_email},
+	         #{customer_state},
+	         NOW(),
+	         NOW());
+	</insert>
+	
+	  <!-- 更新一条记录 -->  
+    <update id="updateCustomer" parameterType="map">  
+       UPDATE customer
+		<trim prefix="SET" suffixOverrides=",">     
+			<if test="customer_id != null and customer_id != ''">
+				 customer_id = #{customer_id},
+			</if>
+			<if test="customer_type != null and customer_type != ''">
+				 customer_type = #{customer_type},
+			</if>
+			<if test="customer_name != null and customer_name != ''">
+				 customer_name = #{customer_name},
+			</if>
+			<if test="customer_pwd != null and customer_pwd != ''">
+				 customer_pwd = #{customer_pwd},
+			</if>
+			<if test="customer_account_pwd != null and customer_account_pwd != ''">
+				 customer_account_pwd = #{customer_account_pwd},
+			</if>
+			<if test="customer_phone != null and customer_phone != ''">
+				 customer_phone = #{customer_phone},
+			</if>
+			<if test="customer_email != null and customer_email != ''">
+				 customer_email = #{customer_email},
+			</if>
+			<if test="customer_state != null and customer_state != ''">
+				 customer_state = #{customer_state}
+			</if>
+		 </trim>
+		WHERE customer_id = #{customer_id}
+    </update>  
+	
+	<!--查询 -->
+	<select id="selectCustomerList" resultMap="BaseResultMap"
+		parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from customer
+		where 1=1
+		<include refid="Sel_Where" />
+		<if test="startRow != null ">
+		    limit #{startRow},#{endRow}
+		</if>
+	</select>
+	
+	<!-- 查询总数 -->
+	<select id="selectCountCustomerList" resultType="Integer"
+		parameterType="map">
+		select
+		count(1)
+		from customer
+		where 1=1
+		<include refid="Sel_Where" />
+	</select>
+	
+	<!-- 查询条件 -->
+	<sql id="Sel_Where">
+		<if test="customer_id != null and customer_id != ''">
+			and customer_id = #{customer_id}
+		</if>
+		<if test="customer_type != null and customer_type != ''">
+			and customer_type = #{customer_type}
+		</if>
+		<if test="customer_name != null and customer_name != ''">
+			and customer_name = #{customer_name}
+		</if>
+		<if test="customer_pwd != null and customer_pwd != ''">
+			and customer_pwd = #{customer_pwd}
+		</if>
+		<if test="customer_account_pwd != null and customer_account_pwd != ''">
+			and customer_account_pwd = #{customer_account_pwd}
+		</if>
+		<if test="customer_phone != null and customer_phone != ''">
+			and customer_phone = #{customer_phone}
+		</if>
+		<if test="customer_email != null and customer_email != ''">
+			and customer_email = #{customer_email}
+		</if>
+		<if test="customer_state != null and customer_state != ''">
+			and customer_state = #{customer_state}
+		</if>
+		
+	</sql>
+
+</mapper>
